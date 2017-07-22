@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/jeep/cocos/vv2d-github/project/common-as/mp3recorder/src/main/jniLibs"><file name="armeabi/libmp3lame.so" path="/Users/jeep/cocos/vv2d-github/project/common-as/mp3recorder/src/main/jniLibs/armeabi/libmp3lame.so"/></source><source path="/Users/jeep/cocos/vv2d-github/project/common-as/mp3recorder/src/main/libs"/></dataSet><dataSet config="release"><source path="/Users/jeep/cocos/vv2d-github/project/common-as/mp3recorder/src/release/jniLibs"/></dataSet></merger>
