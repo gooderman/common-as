@@ -41,8 +41,7 @@ public class sdk_um {
         QueuedWork.isUseThreadPool = false;
         UMShareAPI.get(m_context);
 
-        PlatformConfig.setWeixin(cfg.get("wxkey").toString(), cfg.get("wxsecret").toString());
-
+        PlatformConfig.setWeixin(cfg.get(sdk.TOKEN_WX_APPKEY).toString(), cfg.get(sdk.TOKEN_WX_APPSECRET).toString());
     }
 
     public static void login(int type) {
@@ -173,9 +172,10 @@ public class sdk_um {
     }
 
     public static void um_share_nofity(int result) {
-        if (result == 0) {
-
-        }
+        HashMap<String, Object> nmap = new HashMap<String, Object>();
+        nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOGIN);
+        nmap.put(sdk.SDK_ERROR, Integer.valueOf(result));
+        sdk.notifyEventByObject(nmap);
     }
 
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {

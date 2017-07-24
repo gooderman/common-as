@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.gm.sysinfo.sysinfo;
+import com.gm.utils.Logger;
 import com.umeng.socialize.UMShareAPI;
 
 import com.czt.mp3recorder.MP3Recorder;
@@ -55,6 +56,14 @@ public class sdk implements RecorderStateListener {
     public static String SDK_EVT_RECORD = "record";
     public static String SDK_RECORD_FILENAME = "filename";
     public static String SDK_RECORD_STATE = "state";
+
+    //-----------------------------------------------------
+    // --- config ----
+    public static HashMap<String, String> gMap;
+
+    public static String TOKEN_UM_APPKEY = "umappkey";
+    public static String TOKEN_WX_APPKEY = "wxappkey";
+    public static String TOKEN_WX_APPSECRET = "wxappsecret";
 
     //-----------------------------------------------------
     public static Cocos2dxActivity m_context;
@@ -103,14 +112,6 @@ public class sdk implements RecorderStateListener {
         getInstance();
         sysinfo.init(context);
         m_context = context;
-        Map<String, String> cfg = new HashMap<String, String>();
-        cfg.put("wxkey", wxkey);
-        cfg.put("wxsecret", wxsecret);
-        cfg.put("wbkey", wbkey);
-        cfg.put("wbsecret", wbsecret);
-        cfg.put("qqkey", qqkey);
-        cfg.put("qqsecret", qqsecret);
-        sdk_um.init(m_context, cfg);
     }
 
 
@@ -145,6 +146,21 @@ public class sdk implements RecorderStateListener {
 
     public static void init(int handle) {
         luaevthandler = handle;
+        //游戏传过来的数据key
+        if(null==gMap)
+        {
+            Logger.d("sdk init error, no config");
+            return;
+        }
+        sdk_um.init(m_context, gMap);
+    }
+
+    public static void config(HashMap<String, String> data) {
+        if(null==gMap){
+            gMap = new HashMap<String, String>();
+        }
+        gMap.clear();
+        gMap = data;
     }
 
     public static void login(final int type) {
