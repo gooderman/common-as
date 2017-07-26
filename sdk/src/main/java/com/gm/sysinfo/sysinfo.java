@@ -20,6 +20,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.content.Context;
 import android.content.Intent;
@@ -382,6 +383,20 @@ public class sysinfo {
         }
     }
 
+    public static String metadata(String key)
+    {
+        try {
+            ApplicationInfo ai = m_pm.getApplicationInfo(m_context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            String myApiKey = bundle.getString(key);
+            return myApiKey;
+        } catch (PackageManager.NameNotFoundException e) {
+            Logger.e("Failed to load meta-data, NameNotFound" + e.getMessage());
+        } catch (NullPointerException e) {
+            Logger.e("Failed to load meta-data, NullPointer: " + e.getMessage());
+        }
+        return null;
+    }
     public static void test() {
         Logger.ffkk();
         Logger.d("netstate:" + String.valueOf(netstate()));

@@ -9,7 +9,7 @@ public class Logger {
 
 	public static boolean DEBUG = false;
 
-	private static final String TAG = "yy_sdk";
+	private static final String TAG = "sdk";
 	public static void ffkk() {
 		Logger.DEBUG = true;
 	}
