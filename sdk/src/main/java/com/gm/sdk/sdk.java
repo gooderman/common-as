@@ -12,8 +12,15 @@ import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Application;
+import android.app.Service;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Vibrator;
 
 import com.gm.sysinfo.sysinfo;
 import com.gm.utils.Logger;
@@ -22,8 +29,10 @@ import com.umeng.socialize.UMShareAPI;
 import com.czt.mp3recorder.MP3Recorder;
 import com.czt.mp3recorder.RecorderStateListener;
 
+import com.gm.baiduloc.BaiduLoc;
+import com.gm.baiduloc.BaiduLocListener;
 
-public class sdk implements RecorderStateListener {
+public class sdk implements RecorderStateListener,BaiduLocListener {
     //-----------------------------------------------------
     public static String wxkey = "wx3c59eadee6944071";
     public static String wxsecret = "a245fefb4b5d93ecd354232ba1c4e351";
@@ -57,6 +66,13 @@ public class sdk implements RecorderStateListener {
     public static String SDK_RECORD_FILENAME = "filename";
     public static String SDK_RECORD_STATE = "state";
 
+    // --- 定位 ----
+    public static String SDK_EVT_LOCATION = "locate";
+    public static String SDK_LOCATION_LONGITUDE = "longitude";
+    public static String SDK_LOCATION_LATITUDE = "latitude";
+    public static String SDK_LOCATION_ADDRESS = "address";
+    public static String SDK_LOCATION_ADDRESS_DESCRIBE = "discribe";
+
     //-----------------------------------------------------
     // --- config ----
     public static HashMap<String, String> gMap;
@@ -64,8 +80,13 @@ public class sdk implements RecorderStateListener {
     public static String TOKEN_UM_APPKEY = "umappkey";
     public static String TOKEN_WX_APPKEY = "wxappkey";
     public static String TOKEN_WX_APPSECRET = "wxappsecret";
-
+    public static String TOKEN_BD_LOCKEY = "baidulockey";
     //-----------------------------------------------------
+    // --- clipboard ---
+    private static android.content.ClipboardManager m_ClipboardManager11;
+    private static android.text.ClipboardManager m_ClipboardManager10;
+    //-----------------------------------------------------
+
     public static Cocos2dxActivity m_context;
 
     public static MP3Recorder mRecorder;
@@ -108,12 +129,37 @@ public class sdk implements RecorderStateListener {
         sdk.notifyEventByObject(nmap);
     }
 
+    @Override
+    public void onLocationResult(int error,double longitude, double latitude, String address, String describe) {
+        HashMap<String, Object> nmap = new HashMap<String, Object>();
+        //convert to game
+        nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOCATION);
+        nmap.put(sdk.SDK_LOCATION_LONGITUDE, longitude);
+        nmap.put(sdk.SDK_LOCATION_LATITUDE, latitude);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS, address);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_DESCRIBE, describe);
+        nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
+        sdk.notifyEventByObject(nmap);
+    }
+
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+    //-----------------------------------------------------
     public static void init(Cocos2dxActivity context) {
         getInstance();
         sysinfo.init(context);
         m_context = context;
+
+        init_pasteboard();
+
+        BaiduLoc.init(context, instance);
+        BaiduLoc.reqPermission();
     }
 
+    public static void initApplication(Application context) {
+        getInstance();
+        BaiduLoc.initApplication(context);
+    }
 
     //-----------------------------------------------------
     public static int luaevthandler = 0;
@@ -249,6 +295,63 @@ public class sdk implements RecorderStateListener {
             return 0;
         }
         return mRecorder.getVolume();
+    }
+    //---------------------------------------
+    //---------------------------------------
+    public static void start_locate() {
+        m_context.runOnUiThread(new Runnable() {
+            public void run() {
+                BaiduLoc.stop();
+                BaiduLoc.start();
+            }
+        });
+    }
+    public static void stop_locate() {
+        m_context.runOnUiThread(new Runnable() {
+            public void run() {
+                BaiduLoc.stop();
+            }
+        });
+    }
+    public static double get_distance(double alongitude,double alatitude,double blongitude,double blatitude) {
+        return BaiduLoc.getDistance(alongitude,alatitude,blongitude,blatitude);
+    }
+    //---------------------------------------
+    public static void init_pasteboard() {
+
+        if (Build.VERSION.SDK_INT >= 11) {
+            m_ClipboardManager11 = (android.content.ClipboardManager) m_context.getSystemService(Context.CLIPBOARD_SERVICE);
+        } else {
+            m_ClipboardManager10 = (android.text.ClipboardManager) m_context.getSystemService(Context.CLIPBOARD_SERVICE);
+        }
+    }
+    public static String get_pasteboard() {
+
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= 11) {
+                String content = m_ClipboardManager11.getPrimaryClip().getItemAt(0).getText().toString().trim();
+                return content;
+            }
+
+            if (android.os.Build.VERSION.SDK_INT < 11) {
+                String content = m_ClipboardManager10.getText().toString().trim();
+                return content;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+    public static void set_pasteboard(String str) {
+        if(android.os.Build.VERSION.SDK_INT>=11)
+        {
+            m_ClipboardManager11.setPrimaryClip(ClipData.newPlainText(null,str));
+            return;
+        }
+        if(android.os.Build.VERSION.SDK_INT<11)
+        {
+            m_ClipboardManager10.setText(str);
+        }
     }
 
 }
