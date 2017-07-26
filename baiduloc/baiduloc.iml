@@ -101,6 +101,5 @@
     <orderEntry type="library" exported="" name="support-fragment-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_search_v4_3_1" level="project" />
     <orderEntry type="module" module-name="libcocos2dx" exported="" />
-    <orderEntry type="library" exported="" name="android-async-http-1.4.8" level="project" />
   </component>
 </module>

@@ -4,17 +4,22 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 //import java.util.logging.Logger;
 
+import org.apache.http.conn.util.InetAddressUtils;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -125,6 +130,7 @@ public class sysinfo {
             return "";
         } else if (2 == st) {
             return getWifiIpAddress();
+//            return getLocalIpAddress();
         } else {
             return getLocalIpAddress();
         }
@@ -177,7 +183,13 @@ public class sysinfo {
 
     //国家
     public static String country() {
-        return m_context.getResources().getConfiguration().locale.getCountry();
+        Locale locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = m_context.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            locale = m_context.getResources().getConfiguration().locale;
+        }
+        return locale.getCountry();
     }
 
     //下载地址
@@ -249,6 +261,24 @@ public class sysinfo {
         }
         return "";
     }
+//    public static String getLocalIpAddress() {
+//        try {
+//            String ipv4;
+//            List<NetworkInterface> nilist = Collections.list(NetworkInterface.getNetworkInterfaces());
+//            for (NetworkInterface ni : nilist) {
+//                List<InetAddress> ialist = Collections.list(ni.getInetAddresses());
+//                for (InetAddress address : ialist) {
+//                    if (!address.isLoopbackAddress() &&
+//                            InetAddressUtils.isIPv4Address(ipv4 = address.getHostAddress())) {
+//                        return ipv4;
+//                    }
+//                }
+//            }
+//        } catch (SocketException ex) {
+//            ex.printStackTrace();
+//        }
+//        return "";
+//    }
 
     private static String intToIp(int i) {
         return (i & 0xFF) + "." +
