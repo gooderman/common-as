@@ -72,7 +72,12 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static String SDK_LOCATION_LATITUDE = "latitude";
     public static String SDK_LOCATION_ADDRESS = "address";
     public static String SDK_LOCATION_ADDRESS_DESCRIBE = "discribe";
-
+    public static String SDK_LOCATION_ADDRESS_COUNTY = "county";
+    public static String SDK_LOCATION_ADDRESS_CITY = "city";
+    public static String SDK_LOCATION_ADDRESS_DISTRICT = "district";
+    public static String SDK_LOCATION_ADDRESS_STREET = "street";
+    public static String SDK_LOCATION_ADDRESS_STREETNUMBER = "streetnumber";
+    public static String SDK_LOCATION_ADDRESS_DETAIL = "detail";
     //-----------------------------------------------------
     // --- config ----
     public static HashMap<String, String> gMap;
@@ -130,18 +135,25 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     }
 
     @Override
-    public void onLocationResult(int error,double longitude, double latitude, String address, String describe) {
+    public void onLocationResult(int error,double longitude, double latitude, String address,
+                                 String country,String city,String district,String street,String streetnumb,
+                                 String detail,String describe) {
         HashMap<String, Object> nmap = new HashMap<String, Object>();
         //convert to game
         nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOCATION);
         nmap.put(sdk.SDK_LOCATION_LONGITUDE, longitude);
         nmap.put(sdk.SDK_LOCATION_LATITUDE, latitude);
         nmap.put(sdk.SDK_LOCATION_ADDRESS, address);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_COUNTY, country);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_CITY, city);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_DISTRICT, district);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_STREET, street);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_STREETNUMBER, streetnumb);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_DETAIL, detail);
         nmap.put(sdk.SDK_LOCATION_ADDRESS_DESCRIBE, describe);
         nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
         sdk.notifyEventByObject(nmap);
     }
-
     //-----------------------------------------------------
     //-----------------------------------------------------
     //-----------------------------------------------------
