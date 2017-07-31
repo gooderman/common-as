@@ -60,9 +60,9 @@ public class BaiduLoc {
 	public static BaiduLocListener s_loc_listener;
 
 	public static void nativeNotifyLocation(int error, double longitude,  double latitude, String address,
-											String country,String city,String district,String street,String streetnumb,String detail,String describe)
+											String country,String province,String city,String district,String street,String streetnumb,String detail,String describe)
 	{
-		s_loc_listener.onLocationResult(error,longitude,latitude,address,country,city,district,street,streetnumb,detail,describe);
+		s_loc_listener.onLocationResult(error,longitude,latitude,address,country,province,city,district,street,streetnumb,detail,describe);
 	}
 	public static void init(Cocos2dxActivity context,BaiduLocListener listener) {
 		m_context = context;
@@ -91,7 +91,7 @@ public class BaiduLoc {
 						location.getLocType() == BDLocation.TypeNetWorkException ||
 						location.getLocType() == BDLocation.TypeCriteriaException
 						) {
-					nativeNotifyLocation(1,0,0,"","","","","","","","");
+					nativeNotifyLocation(1,0,0,"","","","","","","","","");
 				}
 				else{
 
@@ -108,13 +108,14 @@ public class BaiduLoc {
 						decribe = "";
 					}
 					String county = location.getCountry();
+					String province = location.getProvince();
 					String city = location.getCity();
 					String district = location.getDistrict();
 					String street = location.getStreet();
 					String streetnumb = location.getStreetNumber();
 					String detail = location.getAddrStr();
 					nativeNotifyLocation(0,s_location.getLongitude(),s_location.getLatitude(),s_address_str,
-							county,city,district,street,streetnumb,detail,decribe);
+							county,province,city,district,street,streetnumb,detail,decribe);
 
 					if(s_address_str.length()==0){
 						searchReverse(s_location.getLongitude(),s_location.getLatitude());
@@ -227,7 +228,7 @@ public class BaiduLoc {
 				s_address_str = result.getAddress();
 				s_address_com = result.getAddressDetail();
 				//result.getLocation();
-				nativeNotifyLocation(0,s_location.getLongitude(),s_location.getLatitude(),s_address_str,"","","","","","","");
+				nativeNotifyLocation(0,s_location.getLongitude(),s_location.getLatitude(),s_address_str,"","","","","","","","");
 			}
 		};
 	}

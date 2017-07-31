@@ -73,6 +73,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static String SDK_LOCATION_ADDRESS = "address";
     public static String SDK_LOCATION_ADDRESS_DESCRIBE = "discribe";
     public static String SDK_LOCATION_ADDRESS_COUNTY = "county";
+    public static String SDK_LOCATION_ADDRESS_PROVINCE = "province";
     public static String SDK_LOCATION_ADDRESS_CITY = "city";
     public static String SDK_LOCATION_ADDRESS_DISTRICT = "district";
     public static String SDK_LOCATION_ADDRESS_STREET = "street";
@@ -136,7 +137,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
 
     @Override
     public void onLocationResult(int error,double longitude, double latitude, String address,
-                                 String country,String city,String district,String street,String streetnumb,
+                                 String country,String province,String city,String district,String street,String streetnumb,
                                  String detail,String describe) {
         HashMap<String, Object> nmap = new HashMap<String, Object>();
         //convert to game
@@ -145,6 +146,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
         nmap.put(sdk.SDK_LOCATION_LATITUDE, latitude);
         nmap.put(sdk.SDK_LOCATION_ADDRESS, address);
         nmap.put(sdk.SDK_LOCATION_ADDRESS_COUNTY, country);
+        nmap.put(sdk.SDK_LOCATION_ADDRESS_PROVINCE, province);
         nmap.put(sdk.SDK_LOCATION_ADDRESS_CITY, city);
         nmap.put(sdk.SDK_LOCATION_ADDRESS_DISTRICT, district);
         nmap.put(sdk.SDK_LOCATION_ADDRESS_STREET, street);
