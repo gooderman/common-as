@@ -113,7 +113,7 @@ public class BaiduLoc {
 					String district = location.getDistrict();
 					String street = location.getStreet();
 					String streetnumb = location.getStreetNumber();
-					String detail = location.getAddrStr();
+					String detail = "";
 					nativeNotifyLocation(0,s_location.getLongitude(),s_location.getLatitude(),s_address_str,
 							county,province,city,district,street,streetnumb,detail,decribe);
 

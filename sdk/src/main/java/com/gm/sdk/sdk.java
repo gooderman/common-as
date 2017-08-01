@@ -50,6 +50,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static String SDK_ICONURL = "iconurl";
     public static String SDK_GENDER = "gender";
     public static String SDK_ACCESS_TOKEN = "accessToken";
+    public static String SDK_REFRESH_TOKEN = "refreshToken";
 
     //----share----
     public static String SDK_SHARE_TYPE = "type";

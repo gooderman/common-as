@@ -10,6 +10,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.SocialRouter;
 import com.umeng.socialize.media.UMEmoji;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.UMAuthListener;
@@ -42,6 +43,11 @@ public class sdk_um {
         UMShareAPI.get(m_context);
 
         PlatformConfig.setWeixin(cfg.get(sdk.TOKEN_WX_APPKEY).toString(), cfg.get(sdk.TOKEN_WX_APPSECRET).toString());
+    }
+
+    public static boolean isinstall() {
+        final UMShareAPI mShareAPI = UMShareAPI.get(m_context);
+        return mShareAPI.isInstall(m_context,SHARE_MEDIA.WEIXIN);
     }
 
     public static void login(int type) {
@@ -157,9 +163,10 @@ public class sdk_um {
                 nmap.put(key, data.get(key));
             }
             //convert to game
-            nmap.put(sdk.SDK_NAME, data.get("screen_name"));
-            nmap.put(sdk.SDK_ICONURL, data.get("profile_image_url"));
-            nmap.put(sdk.SDK_ACCESS_TOKEN, data.get("access_token"));
+            nmap.put(sdk.SDK_NAME, data.get("name"));//screen_name
+            nmap.put(sdk.SDK_ICONURL, data.get("iconurl"));//profile_image_url
+            nmap.put(sdk.SDK_ACCESS_TOKEN, data.get("accessToken"));//access_token
+            nmap.put(sdk.SDK_REFRESH_TOKEN, data.get("refreshToken"));//RefreshToken
 
             nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOGIN);
             nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
