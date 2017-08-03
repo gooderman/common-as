@@ -368,20 +368,6 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
             m_ClipboardManager10.setText(str);
         }
     }
-    //---------------------------------------
-    public static void start_vibrator(long millseconds) {
-        Vibrator vb = (Vibrator)m_context.getSystemService(Service.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= 11) {
-            if (!vb.hasVibrator()) {
-                return;
-            }
-        }
-        vb.vibrate(millseconds);
-    }
-    public static void close_vibrator() {
-        Vibrator vb = (Vibrator)m_context.getSystemService(Service.VIBRATOR_SERVICE);
-        vb.cancel();
-    }
 
 }
 
