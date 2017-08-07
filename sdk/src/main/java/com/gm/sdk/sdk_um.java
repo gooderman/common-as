@@ -87,7 +87,6 @@ public class sdk_um {
 //        mShareAPI.doOauthVerify(m_context, SHARE_MEDIA.WEIXIN, umAuthListener);
         mShareAPI.getPlatformInfo(m_context, SHARE_MEDIA.WEIXIN, umUserinfoListener);
     }
-
     public static void share(int type, String title, String text, String img, String url) {
         UMShareListener umShareListener = new UMShareListener() {
             @Override
@@ -134,6 +133,17 @@ public class sdk_um {
                 web.setTitle(title);
                 web.setDescription(text);
                 shareact.withMedia(web);
+                int iconid = getDrawableIconId();
+                if(iconid>0)
+                {
+                    //Bitmap thumb = BitmapFactory.decodeResource(m_context.getResources(), iconid);
+                    //int WX_THUMB_SIZE = 72;
+                    //Bitmap thumbBmp = Bitmap.createScaledBitmap(thumb, WX_THUMB_SIZE, WX_THUMB_SIZE, true);
+                    UMImage image = new UMImage(m_context, iconid);
+                    //透明设置，否则icon黑边
+                    image.compressFormat = Bitmap.CompressFormat.PNG;
+                    web.setThumb(image);
+                }
             }
             else{
                 shareact.withText(text).withSubject(title);
@@ -188,6 +198,22 @@ public class sdk_um {
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
         UMShareAPI.get(m_context).onActivityResult(requestCode, resultCode, data);
     }
+
+    public static int getResourceId(String pVariableName, String pResourcename)
+    {
+        try {
+            String pPackageName = m_context.getPackageName();
+            return m_context.getResources().getIdentifier(pVariableName, pResourcename, pPackageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public static int getDrawableIconId()
+    {
+        return getResourceId("icon","drawable");
+    }
+
 }
 
 
