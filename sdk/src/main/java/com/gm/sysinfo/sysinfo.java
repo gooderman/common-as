@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 //import java.util.logging.Logger;
@@ -419,6 +420,19 @@ public class sysinfo {
             ApplicationInfo ai = m_pm.getApplicationInfo(m_context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             String myApiKey = bundle.getString(key);
+            if(myApiKey==null)
+            {
+//                int v = bundle.getInt(key,-999);
+//                if(v!=-999)
+//                {
+//                    myApiKey = String.valueOf(v);
+//                }
+                  Object o = bundle.get(key);
+                  if(o!=null)
+                  {
+                      myApiKey = String.valueOf(o);
+                  }
+            }
             return myApiKey;
         } catch (PackageManager.NameNotFoundException e) {
             Logger.e("Failed to load meta-data, NameNotFound" + e.getMessage());
