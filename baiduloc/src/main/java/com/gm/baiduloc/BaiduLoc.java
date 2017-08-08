@@ -114,6 +114,14 @@ public class BaiduLoc {
 					String street = location.getStreet();
 					String streetnumb = location.getStreetNumber();
 					String detail = "";
+
+					if(county == null) county = "";
+					if(province == null) province = "";
+					if(city == null) city = "";
+					if(district == null) district = "";
+					if(street == null) street = "";
+					if(streetnumb == null) streetnumb = "";
+
 					nativeNotifyLocation(0,s_location.getLongitude(),s_location.getLatitude(),s_address_str,
 							county,province,city,district,street,streetnumb,detail,decribe);
 
