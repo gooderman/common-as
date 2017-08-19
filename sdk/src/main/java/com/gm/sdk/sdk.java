@@ -89,6 +89,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static String TOKEN_WX_APPKEY = "wxappkey";
     public static String TOKEN_WX_APPSECRET = "wxappsecret";
     public static String TOKEN_BD_LOCKEY = "baidulockey";
+    public static String TOKEN_RECORD_DURATION_LIMIT = "record_duration_limit";
     //-----------------------------------------------------
     // --- clipboard ---
     private static android.content.ClipboardManager m_ClipboardManager11;
@@ -221,6 +222,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
             return;
         }
         sdk_um.init(m_context, gMap);
+        init_record(gMap);
     }
 
     public static void config(HashMap<String, String> data) {
@@ -284,6 +286,19 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
         });
     }
 
+    public static boolean init_record(final HashMap<String, String> data) {
+        if (data.containsKey(TOKEN_RECORD_DURATION_LIMIT)) {
+            String aa = (String) data.get(TOKEN_RECORD_DURATION_LIMIT);
+            try {
+                Float f = Float.valueOf(aa);
+                MP3Recorder.setLimitDuration(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
     /**
      * 开始录音
      *
@@ -291,6 +306,10 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
      */
     public static boolean start_record(final HashMap<String, String> data) {
         stop_record();
+        if(mRecorder!=null)
+        {
+            return false;
+        }
         mRecorder = new MP3Recorder(instance);
         try {
             mRecorder.start(data.get(SDK_RECORD_FILENAME));
@@ -309,7 +328,10 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
             return;
         }
         mRecorder.stop();
-        mRecorder = null;
+        if(mRecorder.isStoped())
+        {
+            mRecorder = null;
+        }
     }
 
     public static int record_getVolume() {
