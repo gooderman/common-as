@@ -26,18 +26,25 @@ public class DataEncodeThread extends HandlerThread implements AudioRecord.OnRec
     private FileOutputStream mFileOutputStream;
     private RecorderStateListener mStateListener;
     private String mFileName;
+    private boolean mStoped;
+
+    public boolean isStoped(){
+        return mStoped;
+    }
 
     private static class StopHandler extends Handler {
 
         private DataEncodeThread encodeThread;
         private RecorderStateListener listener;
         private String filename;
+        private Double mDuration;
 
         public StopHandler(Looper looper, DataEncodeThread encodeThread, RecorderStateListener listener, String filename) {
             super(looper);
             this.encodeThread = encodeThread;
             this.listener = listener;
             this.filename = filename;
+            this.mDuration=0.00;
         }
 
         @Override
@@ -52,8 +59,10 @@ public class DataEncodeThread extends HandlerThread implements AudioRecord.OnRec
                 if (listener != null) {
                     HashMap<String, Object> data = new HashMap<String, Object>();
                     data.put("filename", filename);
+                    data.put("duration", mDuration);
                     listener.onRecorderState("stoped", data);
                 }
+                encodeThread.mStoped = true;
             }
         }
     }
@@ -70,13 +79,14 @@ public class DataEncodeThread extends HandlerThread implements AudioRecord.OnRec
         this.mFileName = filename;
         File f = new File(filename);
         if (f.exists()) {
-            Log.i("jinlai.pdk", "DataEncodeThread: 文件存在，需要删除：" + filename);
+            Log.i("ddd.pdk", "DataEncodeThread: 文件存在，需要删除：" + filename);
             if (!f.delete()) {
-                Log.i("jinlai.pdk", "DataEncodeThread: 删除成功：" + filename);
+                Log.i("ddd.pdk", "DataEncodeThread: 删除成功：" + filename);
             }
         }
         this.mFileOutputStream = new FileOutputStream(filename);
         mMp3Buffer = new byte[(int) (7200 + (bufferSize * 2 * 1.25))];
+        mStoped = false;
     }
 
     @Override
@@ -91,8 +101,9 @@ public class DataEncodeThread extends HandlerThread implements AudioRecord.OnRec
         }
     }
 
-    public void sendStopMessage() {
+    public void sendStopMessage(double duration) {
         check();
+        mHandler.mDuration = duration;
         mHandler.sendEmptyMessage(PROCESS_STOP);
     }
 

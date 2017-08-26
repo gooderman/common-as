@@ -33,9 +33,28 @@ public class MP3Recorder {
     /**
      * Encoded bit rate. MP3 file will be encoded with bit rate 32kbps
      */
-    private static final int DEFAULT_LAME_MP3_BIT_RATE = 32;
+//    private static final int DEFAULT_LAME_MP3_BIT_RATE = 32;
+    private static final int DEFAULT_LAME_MP3_BIT_RATE = 64;
+    //ios 32k 双声道
+    //android 64K 单声道
 
+    //根据size计算duration基本一致
+    //公式如下：其中*2是测试后的结果，brate固定32000
+    //brate * 2 * dt/8 = sz
+    //brate=32000
+    //dt = sz*4/brate
     //==================================================================
+
+    public static  float LIMIT_DURATION = 60;
+
+    public static void setLimitDuration(float dt)
+    {
+        if(dt>0)
+        {
+            LIMIT_DURATION = dt;
+        }
+    }
+
 
     /**
      * 自定义 每160帧作为一个周期，通知一下需要进行编码
@@ -46,6 +65,7 @@ public class MP3Recorder {
     private short[] mPCMBuffer;
     private DataEncodeThread mEncodeThread;
     private boolean mIsRecording = false;
+    private double mDuration = 0;
     private String mRecordFileName;
     private RecorderStateListener mStateListener;
 
@@ -57,6 +77,10 @@ public class MP3Recorder {
      */
     public MP3Recorder(RecorderStateListener stateListener) {
         mStateListener = stateListener;
+    }
+
+    public boolean isStoped(){
+        return mEncodeThread.isStoped();
     }
 
     /**
@@ -84,20 +108,30 @@ public class MP3Recorder {
             public void run() {
                 //设置线程权限
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
+                long start_tm = System.nanoTime();
                 while (mIsRecording) {
                     int readSize = mAudioRecord.read(mPCMBuffer, 0, mBufferSize);
                     if (readSize > 0) {
                         mEncodeThread.addTask(mPCMBuffer, readSize);
                         calculateRealVolume(mPCMBuffer, readSize);
                     }
+                    long stop_tm = System.nanoTime();
+                    mDuration = 1.0f*(stop_tm-start_tm)/1000000000L;
+                    if(mDuration>=LIMIT_DURATION)
+                    {
+                        mIsRecording = false;
+                        break;
+                    }
                 }
+                long stop_tm = System.nanoTime();
+                mDuration = 1.0f*(stop_tm-start_tm)/1000000000L;
                 // release and finalize audioRecord
                 mAudioRecord.stop();
                 mAudioRecord.release();
                 mAudioRecord = null;
                 // stop the encoding thread and try to wait
                 // until the thread finishes its job
-                mEncodeThread.sendStopMessage();
+                mEncodeThread.sendStopMessage(mDuration);
             }
 
             /**
@@ -155,7 +189,9 @@ public class MP3Recorder {
     }
 
     public void stop() {
-        mIsRecording = false;
+        if(mIsRecording==true) {
+            mIsRecording = false;
+        }
     }
 
     public boolean isRecording() {
