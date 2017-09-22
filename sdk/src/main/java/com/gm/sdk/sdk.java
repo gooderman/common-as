@@ -138,6 +138,7 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
         }
         HashMap<String, Object> nmap = new HashMap<String, Object>();
         nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_RECORD);
+        nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
         nmap.put(sdk.SDK_RECORD_STATE, state);
         nmap.put(sdk.SDK_RECORD_FILENAME, fileName);
         nmap.put(sdk.SDK_RECORD_DURATION, duration);
