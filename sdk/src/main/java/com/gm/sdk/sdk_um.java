@@ -190,7 +190,7 @@ public class sdk_um {
 
     public static void um_share_nofity(int result) {
         HashMap<String, Object> nmap = new HashMap<String, Object>();
-        nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOGIN);
+        nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_SHARE);
         nmap.put(sdk.SDK_ERROR, Integer.valueOf(result));
         sdk.notifyEventByObject(nmap);
     }

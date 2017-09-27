@@ -21,12 +21,18 @@ import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +47,8 @@ import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.gm.service.RestartService;
+import com.gm.service.InstallService;
 import com.gm.utils.Logger;
 
 
@@ -230,7 +238,6 @@ public class sysinfo {
                 m_context.startActivity(intent);
             }
         });
-
     }
 
     //打开app
@@ -441,6 +448,30 @@ public class sysinfo {
         }
         return null;
     }
+
+    public static double availmem() {
+        ActivityManager acmng = (ActivityManager) m_context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        if(memoryInfo!=null) {
+            //获得系统可用内存，保存在MemoryInfo对象上
+            acmng.getMemoryInfo(memoryInfo);
+            long memSize = memoryInfo.availMem;
+            return memSize / (1024 * 1024);
+        }
+        return 0;
+    }
+    public static double totalmem()
+    {
+        ActivityManager acmng = (ActivityManager) m_context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        if(memoryInfo!=null) {
+            //获得系统可用内存，保存在MemoryInfo对象上
+            acmng.getMemoryInfo(memoryInfo);
+            long memSize = memoryInfo.totalMem;
+            return memSize / (1024 * 1024);
+        }
+        return 0;
+    }
     public static void test() {
         Logger.ffkk();
         Logger.d("netstate:" + String.valueOf(netstate()));
@@ -454,9 +485,78 @@ public class sysinfo {
         Logger.d("appname:" + appname());
         Logger.d("appversion:" + appversion());
         Logger.d("country:" + country());
+        Logger.d("availmem:" + String.valueOf(availmem()));
+        Logger.d("totalmem:" + String.valueOf(totalmem()));
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * 重启整个APP
+     * @param context
+     * @param Delayed 延迟多少毫秒
+     */
+    public static void restartAPP_Ex(Context context,long Delayed){
+
+//        /**开启一个新的服务，用来重启本APP*/
+//        Intent intent1=new Intent(context,RestartService.class);
+//        intent1.putExtra("PackageName",context.getPackageName());
+//        intent1.putExtra("Delayed",Delayed);
+//        intent1.putExtra("Appid",android.os.Process.myPid());
+//        context.startService(intent1);
+//        /**杀死整个进程**/
+//        android.os.Process.killProcess(android.os.Process.myPid());
+
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        PendingIntent restartIntent = PendingIntent.getActivity(context.getApplicationContext(), 11223344, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 150, restartIntent);
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    /***重启整个APP*/
+    public static void restartAPP(){
+        m_context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                restartAPP_Ex(m_context, 2000);
+            }
+        });
+    }
+
+    public static void installAPP_Ex(String filepath,int killself){
+
+        /**开启一个新的服务，用来重启本APP*/
+        Intent intent1=new Intent(m_context,InstallService.class);
+        intent1.putExtra("FileName",filepath);
+        intent1.putExtra("Delayed",500);
+        m_context.startService(intent1);
+
+
+        if(killself>0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }, 5000);
+        }
+
+        /**杀死整个进程**/
+//        if(killself>0) {
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//        }
+    }
+    /***安装整个APP*/
+    public static void installAPP(final String filepath,final int killself) {
+        m_context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                installAPP_Ex(filepath,killself);
+            }
+        });
+    }
 }
-
 
