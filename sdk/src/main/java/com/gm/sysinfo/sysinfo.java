@@ -46,6 +46,7 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.gm.service.RestartService;
 import com.gm.service.InstallService;
@@ -241,8 +242,21 @@ public class sysinfo {
     }
 
     //打开app
-    public static void openapp(String name) {
-
+    public static void openapp(final String name) {
+        m_context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = isinstall(name);
+                if(flag)
+                {
+                    android.content.pm.PackageManager packageManager = m_context.getPackageManager();
+                    Intent intent = packageManager.getLaunchIntentForPackage(name);
+                    m_context.startActivity(intent);
+                } else {
+                    Toast.makeText(m_context, "没有安装" + name, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     //开机时间秒
