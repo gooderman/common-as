@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_custom.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_template_big_media_custom.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_media_cancel_action.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_media_action.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_template_big_media.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/layout-v11/notification_template_big_media_narrow_custom.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/layout-v11/notification_template_big_media_narrow_custom.xml"
+    }
+]

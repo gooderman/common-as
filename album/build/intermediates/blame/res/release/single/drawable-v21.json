@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/drawable-v21/notification_action_background.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/drawable-v21/notification_action_background.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/jeep/cocos/vv2d-github/project/common-as/album/build/intermediates/res/merged/release/drawable-v21/abc_edit_text_material.xml",
+        "source": "/Users/jeep/.android/build-cache/5b6ba0985675c3304ba4ad69d8faad1594f13050/output/res/drawable-v21/abc_edit_text_material.xml"
+    }
+]
