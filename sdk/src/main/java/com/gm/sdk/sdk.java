@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 import com.gm.sysinfo.sysinfo;
 import com.gm.utils.Logger;
@@ -83,6 +84,9 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static String SDK_LOCATION_ADDRESS_STREET = "street";
     public static String SDK_LOCATION_ADDRESS_STREETNUMBER = "streetnumber";
     public static String SDK_LOCATION_ADDRESS_DETAIL = "detail";
+
+    // --- 保存图片 ----
+    public static String SDK_EVT_SAVE_IMAGE = "saveimage";
     //-----------------------------------------------------
     // --- config ----
     public static HashMap<String, String> gMap;
@@ -418,8 +422,34 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
         vb.cancel();
     }
     //---------------------------------------
-    public static void save_image_album(String imagefile) {
-        AlbumUtils.saveImage(imagefile,sysinfo.appname());
+    public static void save_image_album(final String imagefile) {
+        m_context.runOnUiThread(new Runnable() {
+            public void run() {
+                boolean ret = AlbumUtils.saveImage(imagefile,sysinfo.appname());
+                if(ret)
+                {
+                    Toast toast= Toast.makeText(m_context.getApplicationContext(),"保存图片成功",Toast.LENGTH_SHORT);
+                    toast.setMargin(50,50);
+                    toast.show();
+                }
+                else
+                {
+                    Toast toast= Toast.makeText(m_context.getApplicationContext(),"保存图片失败",Toast.LENGTH_SHORT);
+                    toast.setMargin(50,50);
+                    toast.show();
+                }
+                //notify--look--
+                HashMap<String, Object> nmap = new HashMap<String, Object>();
+                nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_SAVE_IMAGE);
+                if(ret) {
+                    nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
+                }
+                else {
+                    nmap.put(sdk.SDK_ERROR, Integer.valueOf(-1));
+                }
+                sdk.notifyEventByObject(nmap);
+            }
+        });
     }
 
 }
