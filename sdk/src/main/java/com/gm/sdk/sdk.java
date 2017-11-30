@@ -32,6 +32,8 @@ import com.czt.mp3recorder.RecorderStateListener;
 import com.gm.baiduloc.BaiduLoc;
 import com.gm.baiduloc.BaiduLocListener;
 
+import com.gm.album.AlbumUtils;
+
 public class sdk implements RecorderStateListener,BaiduLocListener {
     //-----------------------------------------------------
     public static String wxkey = "wx3c59eadee6944071";
@@ -178,6 +180,9 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
 
         BaiduLoc.init(context, instance);
         BaiduLoc.reqPermission();
+
+        AlbumUtils.init(context);
+        AlbumUtils.reqPermission();
     }
 
     public static void initApplication(Application context) {
@@ -411,6 +416,10 @@ public class sdk implements RecorderStateListener,BaiduLocListener {
     public static void close_vibrator() {
         Vibrator vb = (Vibrator)m_context.getSystemService(Service.VIBRATOR_SERVICE);
         vb.cancel();
+    }
+    //---------------------------------------
+    public static void save_image_album(String imagefile) {
+        AlbumUtils.saveImage(imagefile,sysinfo.appname());
     }
 
 }

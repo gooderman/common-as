@@ -287,7 +287,7 @@ public class BaiduLoc {
 			return null;
 		}
 	}
-	public static boolean reqPermission(){
+	public static boolean reqPermission_old(){
 		if (Build.VERSION.SDK_INT >= 23) {
 			String[] ps = needPermission();
 			if (ps == null) {
@@ -316,6 +316,13 @@ public class BaiduLoc {
 		}
 	}
 
+	public static boolean reqPermission() {
+		String[] permissions = needPermission();
+		if (permissions == null) {
+			return true;
+		}
+		return m_context.requestPermission(20000,permissions,"防作弊功能需要定位权限");
+	}
 }
 
 

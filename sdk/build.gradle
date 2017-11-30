@@ -7,8 +7,8 @@ android {
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 10
+        minSdkVersion 14
+        targetSdkVersion 14
     }
 
     buildTypes {
@@ -24,4 +24,5 @@ dependencies {
     compile project(':umshare')
     compile project(':mp3recorder')
     compile project(':baiduloc')
+    compile project(':album')
 }
