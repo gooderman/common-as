@@ -111,5 +111,16 @@
     <orderEntry type="module" module-name="mp3recorder" exported="" />
     <orderEntry type="module" module-name="umshare" exported="" />
     <orderEntry type="library" exported="" name="org.apache.http.legacy-android-25" level="project" />
+    <orderEntry type="library" exported="" name="android-async-http-1.4.8" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_base_v4_3_1" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_util_v4_3_1" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_map_v4_3_1" level="project" />
+    <orderEntry type="library" exported="" name="locSDK_6.13" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_search_v4_3_1" level="project" />
+    <orderEntry type="library" exported="" name="SocialSDK_WeChat_Simplify" level="project" />
+    <orderEntry type="library" exported="" name="umeng_social_net" level="project" />
+    <orderEntry type="library" exported="" name="umeng_social_api" level="project" />
+    <orderEntry type="library" exported="" name="umeng_social_tool" level="project" />
   </component>
 </module>
