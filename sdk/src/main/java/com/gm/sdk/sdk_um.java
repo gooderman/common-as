@@ -50,24 +50,24 @@ public class sdk_um {
         return mShareAPI.isInstall(m_context,SHARE_MEDIA.WEIXIN);
     }
 
-    public static void login(int type) {
+    public static void login(final int type) {
         final UMShareAPI mShareAPI = UMShareAPI.get(m_context);
         final UMAuthListener umUserinfoListener = new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {}
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                sdk_um.um_login_notify(0, data);
+                sdk_um.um_login_notify(0, type,data);
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-                sdk_um.um_login_notify(1, null);
+                sdk_um.um_login_notify(1, type,null);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
-                sdk_um.um_login_notify(2, null);
+                sdk_um.um_login_notify(2, type,null);
             }
         };
 //		UMAuthListener umAuthListener = new UMAuthListener() {
@@ -87,23 +87,23 @@ public class sdk_um {
 //        mShareAPI.doOauthVerify(m_context, SHARE_MEDIA.WEIXIN, umAuthListener);
         mShareAPI.getPlatformInfo(m_context, SHARE_MEDIA.WEIXIN, umUserinfoListener);
     }
-    public static void share(int type, String title, String text, String img, String url) {
+    public static void share(final int type, String title, String text, String img, String url) {
         UMShareListener umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {}
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                sdk_um.um_share_nofity(0);
+                sdk_um.um_share_nofity(0,type);
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                sdk_um.um_share_nofity(1);
+                sdk_um.um_share_nofity(1,type);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                sdk_um.um_share_nofity(2);
+                sdk_um.um_share_nofity(2,type);
             }
         };
 
@@ -165,7 +165,7 @@ public class sdk_um {
 
     }
 
-    public static void um_login_notify(int result, Map<String, String> data) {
+    public static void um_login_notify(int result,int type, Map<String, String> data) {
 
         HashMap<String, Object> nmap = new HashMap<String, Object>();
         if (result == 0) {
@@ -180,18 +180,21 @@ public class sdk_um {
 
             nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOGIN);
             nmap.put(sdk.SDK_ERROR, Integer.valueOf(0));
+            nmap.put(sdk.SDK_SHARE_TYPE, Integer.valueOf(type));
             sdk.notifyEventByObject(nmap);
         } else {
             nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_LOGIN);
             nmap.put(sdk.SDK_ERROR, Integer.valueOf(1));
+            nmap.put(sdk.SDK_SHARE_TYPE, Integer.valueOf(type));
             sdk.notifyEventByObject(nmap);
         }
     }
 
-    public static void um_share_nofity(int result) {
+    public static void um_share_nofity(int result,int type) {
         HashMap<String, Object> nmap = new HashMap<String, Object>();
         nmap.put(sdk.SDK_EVT, sdk.SDK_EVT_SHARE);
         nmap.put(sdk.SDK_ERROR, Integer.valueOf(result));
+        nmap.put(sdk.SDK_SHARE_TYPE, Integer.valueOf(type));
         sdk.notifyEventByObject(nmap);
     }
 
