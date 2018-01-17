@@ -19,6 +19,7 @@ import org.apache.http.conn.util.InetAddressUtils;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
@@ -112,6 +113,8 @@ public class sysinfo {
     public static String imei() {
         String imeiStr = "";
         try {
+            String[] permissions = new String[]{Manifest.permission.READ_PHONE_STATE};
+            m_context.requestPermission(10001,permissions,"需要读取手机ID");
             imeiStr = ((TelephonyManager) m_context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         } catch (Exception e) {
             e.printStackTrace();
