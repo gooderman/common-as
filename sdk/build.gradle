@@ -3,8 +3,8 @@ apply plugin: 'com.android.library'
 android {
     useLibrary 'org.apache.http.legacy'
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 14
@@ -20,9 +20,12 @@ android {
 }
 
 dependencies {
-    compile project(':libcocos2dx')
-    compile project(':umshare')
-    compile project(':mp3recorder')
-    compile project(':baiduloc')
-    compile project(':album')
+    implementation project(':libcocos2dx')
+    api project(':umshare')
+    api project(':mp3recorder')
+    api project(':baiduloc')
+    api project(':album')
+    api project(':easypermissions')
+    api 'com.android.support:appcompat-v7:27.+'
+    api 'com.android.support:support-v4:27.+'
 }

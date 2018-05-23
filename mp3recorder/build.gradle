@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     resourcePrefix "mp3recorder_"	//这个随便填
 
@@ -17,8 +17,8 @@ android {
     }
 
     dependencies {
-        // compile 'com.android.support:support-v4:23.1.1'
-        // compile files('libs/android-support-v4.jar')
+        // implementation 'com.android.support:support-v4:23.1.1'
+        // implementation files('libs/android-support-v4.jar')
     }
 
     buildTypes {
